@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="软件测试零基础游戏化学习任务大厅" />
+  <title>TestQuest · 软件测试学习任务大厅</title>
+  <style>
+    :root { --bg:#f5f7fb; --card:#fff; --ink:#172033; --muted:#6f7a90; --line:#e8ebf2; --primary:#6c5ce7; --primary-dark:#5142c5; --cyan:#16b8a6; --gold:#f4ad32; --danger:#e45d75; --shadow:0 12px 36px rgba(37,48,84,.08); }
+    * { box-sizing:border-box; }
+    body { margin:0; color:var(--ink); background:var(--bg); font:15px/1.6 Inter,"PingFang SC","Microsoft YaHei",sans-serif; }
+    button { border:0; cursor:pointer; font:inherit; }
+    .app { max-width:1180px; margin:auto; padding:28px 20px 56px; }
+    .hero { background:linear-gradient(135deg,#211b52 0%,#5142c5 58%,#7b6ff0 100%); border-radius:28px; color:white; padding:34px; box-shadow:var(--shadow); position:relative; overflow:hidden; }
+    .hero:after { content:'✦'; position:absolute; right:7%; top:-28px; font-size:190px; opacity:.1; }
+    .eyebrow { opacity:.75; letter-spacing:.12em; font-size:12px; font-weight:800; text-transform:uppercase; }
+    h1 { margin:6px 0 8px; font-size:clamp(28px,5vw,48px); line-height:1.15; }
+    .hero p { max-width:650px; margin:0; opacity:.86; }
+    .hero-actions { display:flex; gap:10px; flex-wrap:wrap; margin-top:24px; position:relative; z-index:1; }
+    .btn { border-radius:12px; padding:10px 15px; font-weight:700; transition:.2s; }
+    .btn:hover { transform:translateY(-1px); }
+    .btn-light { background:white; color:var(--primary-dark); }.btn-ghost { color:white; background:rgba(255,255,255,.15); }
+    .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin:18px 0; }
+    .stat,.card { background:var(--card); border:1px solid var(--line); border-radius:18px; box-shadow:var(--shadow); }
+    .stat { padding:17px 19px; }.stat strong { display:block; font-size:27px; line-height:1.2; }.stat span { color:var(--muted); font-size:13px; }
+    .layout { display:grid; grid-template-columns:1.5fr .75fr; gap:18px; align-items:start; }
+    .card { padding:22px; }.section-head { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:16px; }.section-head h2 { margin:0; font-size:20px; }
+    .tabs { display:flex; gap:7px; flex-wrap:wrap; }.tab { padding:7px 12px; color:var(--muted); background:#f1f3f9; border-radius:9px; }.tab.active { color:white; background:var(--primary); }
+    .mission { border:1px solid var(--line); border-radius:15px; padding:16px; display:flex; gap:13px; align-items:flex-start; margin:10px 0; transition:.2s; }.mission:hover { border-color:#bbb3fa; transform:translateY(-1px); }.mission.done { background:#f6fffd; border-color:#b9eee7; }.check { width:27px; height:27px; flex:0 0 27px; border-radius:50%; border:2px solid #c8cedb; background:white; color:white; display:grid; place-items:center; font-weight:900; }.done .check { background:var(--cyan); border-color:var(--cyan); }.mission-body { flex:1; min-width:0; }.mission-title { font-weight:800; }.done .mission-title { text-decoration:line-through; color:var(--muted); }.mission-desc { color:var(--muted); margin:2px 0 7px; font-size:13px; }.tag { display:inline-block; background:#eeecff; color:var(--primary-dark); border-radius:6px; padding:2px 7px; font-size:11px; font-weight:700; margin-right:5px; }.xp { color:#bf7c00; font-weight:800; font-size:13px; white-space:nowrap; }
+    .progress-wrap { background:#eceef5; height:10px; border-radius:10px; overflow:hidden; margin:9px 0 5px; }.progress { height:100%; background:linear-gradient(90deg,var(--cyan),#65d7c9); border-radius:inherit; transition:.4s; }.progress-label { display:flex; justify-content:space-between; color:var(--muted); font-size:12px; }
+    .level { display:flex; align-items:center; gap:14px; padding-bottom:16px; border-bottom:1px solid var(--line); }.avatar { width:58px; height:58px; display:grid; place-items:center; border-radius:17px; background:#eeecff; font-size:30px; }.level h3 { margin:0; }.level p { margin:1px 0 0; color:var(--muted); font-size:13px; }.side-block { padding:17px 0; border-bottom:1px solid var(--line); }.side-block:last-child { border-bottom:0; }.side-block h3 { font-size:14px; margin:0 0 10px; }.badge-list { display:flex; flex-wrap:wrap; gap:8px; }.badge { padding:8px 10px; background:#fff8e7; border:1px solid #f9dfa4; border-radius:10px; font-size:12px; }.badge.locked { opacity:.4; filter:grayscale(1); }.tip { background:#f4f2ff; border-radius:12px; padding:12px; color:#5142c5; font-size:13px; }.empty { padding:30px; text-align:center; color:var(--muted); }
+    .modal-backdrop { position:fixed; inset:0; background:rgba(23,32,51,.48); display:none; place-items:center; padding:20px; z-index:10; }.modal-backdrop.show { display:grid; }.modal { background:white; max-width:520px; width:100%; border-radius:22px; padding:25px; box-shadow:0 20px 70px rgba(0,0,0,.2); }.modal h2 { margin:0 0 8px; }.modal p { color:var(--muted); }.modal-actions { display:flex; justify-content:flex-end; gap:9px; margin-top:20px; }.btn-primary { color:white; background:var(--primary); }.btn-danger { color:var(--danger); background:#fff0f2; }
+    @media (max-width:780px) { .stats { grid-template-columns:repeat(2,1fr); }.layout { grid-template-columns:1fr; }.hero { padding:25px; }.mission { padding:13px; } }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <section class="hero">
+      <div class="eyebrow">TESTQUEST · DAILY LEARNING RPG</div>
+      <h1>把学习测试变成一场冒险。</h1>
+      <p>每天完成一个小任务，积累经验值，解锁软件测试技能。今天不用学完全部，只要完成下一步。</p>
+      <div class="hero-actions"><button class="btn btn-light" id="startToday">开始今日任务 ↓</button><button class="btn btn-ghost" id="resetProgress">重置本地进度</button></div>
+    </section>
+    <section class="stats">
+      <div class="stat"><strong id="levelStat">Lv.1</strong><span>当前等级</span></div><div class="stat"><strong id="xpStat">0 XP</strong><span>累计经验</span></div><div class="stat"><strong id="streakStat">0 天</strong><span>连续学习</span></div><div class="stat"><strong id="doneStat">0 / 0</strong><span>完成任务</span></div>
+    </section>
+    <div class="layout">
+      <section class="card" id="missionsCard"><div class="section-head"><h2>🗺️ 学习任务地图</h2><div class="tabs"><button class="tab active" data-filter="all">全部</button><button class="tab" data-filter="todo">待完成</button><button class="tab" data-filter="done">已完成</button></div></div><div id="missions"></div></section>
+      <aside class="card"><div class="level"><div class="avatar" id="avatar">🧪</div><div><h3 id="rankName">测试学徒</h3><p id="rankText">完成任务提升等级</p></div></div><div class="side-block"><h3>等级进度</h3><div class="progress-wrap"><div class="progress" id="levelProgress"></div></div><div class="progress-label"><span id="levelProgressText">0 / 100 XP</span><span id="nextLevel">距下一级</span></div></div><div class="side-block"><h3>🏆 已解锁徽章</h3><div class="badge-list" id="badges"></div></div><div class="side-block"><h3>💡 今日提示</h3><div class="tip" id="tip">先理解“为什么测”，再学习“怎么自动化”。</div></div></aside>
+    </div>
+  </main>
+  <div class="modal-backdrop" id="modalBackdrop"><div class="modal"><h2 id="modalTitle"></h2><p id="modalDesc"></p><div id="modalExtra"></div><div class="modal-actions"><button class="btn btn-ghost" style="color:var(--ink);background:#f1f3f9" id="closeModal">稍后再做</button><button class="btn btn-primary" id="completeModal">完成任务 + XP</button></div></div></div>
+  <script>
+    const missions = [
+      {id:'w1-1', week:1, title:'测试侦察：写出 5 个测试点', desc:'选择你常用的 App，思考登录、搜索或下单功能可能出现的问题。', tag:'测试基础', xp:30, deliver:'把测试点写入 docs/weekly/week-01-summary.md。'},
+      {id:'w1-2', week:1, title:'用例工坊：设计 10 条登录用例', desc:'包含正常、异常、边界和权限场景。', tag:'测试用例', xp:40, deliver:'参考 docs/02-test-cases.md 完成自己的用例。'},
+      {id:'w1-3', week:1, title:'Bug 赏金：写一份规范 Bug', desc:'必须包含环境、步骤、实际结果和预期结果。', tag:'Bug 报告', xp:35, deliver:'参考 docs/03-bug-report-examples.md。'},
+      {id:'w2-1', week:2, title:'Python 训练场：完成过滤函数', desc:'实现并测试 filter_projects，覆盖存在、不存在和空关键词。', tag:'Python', xp:45, deliver:'运行 learning/python_basics 下的测试。'},
+      {id:'w2-2', week:2, title:'Python 训练场：读懂一个类', desc:'打开项目的 Page Object，找出属性、方法和构造函数。', tag:'Python', xp:35, deliver:'在学习笔记中画出类的结构。'},
+      {id:'w3-1', week:3, title:'pytest 新手村：写第一个断言', desc:'写一个简单函数测试，并故意让它失败一次。', tag:'pytest', xp:35, deliver:'记录一次失败输出和你的分析。'},
+      {id:'w3-2', week:3, title:'fixture 工坊：准备一份测试数据', desc:'用 fixture 提供用户或项目数据，避免测试重复准备。', tag:'pytest', xp:45, deliver:'理解 fixture 的 setup 和 teardown。'},
+      {id:'w4-1', week:4, title:'接口雷达：读懂一份接口文档', desc:'找出 URL、方法、参数、认证方式、状态码和响应结构。', tag:'接口测试', xp:35, deliver:'参考 docs/api-document-template.md。'},
+      {id:'w4-2', week:4, title:'接口挑战：覆盖 401 与 403', desc:'解释未认证和无权限的区别，并各写一个测试场景。', tag:'接口测试', xp:45, deliver:'写入接口测试笔记。'},
+      {id:'w5-1', week:5, title:'SQL 地牢：完成 5 条查询', desc:'练习 SELECT、WHERE、ORDER BY、LIMIT 和 COUNT。', tag:'SQL', xp:40, deliver:'参考 docs/SQL_GUIDE.md。'},
+      {id:'w5-2', week:5, title:'数据验证：设计接口 + SQL 流程', desc:'以创建订单为例，写出接口返回和数据库验证步骤。', tag:'SQL', xp:45, deliver:'画出完整数据验证链路。'},
+      {id:'w6-1', week:6, title:'浏览器启程：打开页面并断言', desc:'使用 Playwright 完成导航，并验证 URL 或页面标题。', tag:'Playwright', xp:40, deliver:'完成一个可以运行的 UI 测试。'},
+      {id:'w6-2', week:6, title:'定位器挑战：用用户语言定位', desc:'优先练习 role、label、placeholder 和 text 定位。', tag:'Playwright', xp:45, deliver:'避免把固定等待当作解决方案。'},
+      {id:'w7-1', week:7, title:'POM 工坊：封装一个页面操作', desc:'把输入和点击封装为 Page Object 方法。', tag:'POM', xp:50, deliver:'参考 docs/09-pom-notes.md。'},
+      {id:'w8-1', week:8, title:'失败调查局：分析一次失败', desc:'区分产品 Bug、定位器、环境、数据和断言问题。', tag:'稳定性', xp:45, deliver:'参考 docs/10-failure-analysis.md。'},
+      {id:'w9-1', week:9, title:'冒烟小队：挑选 5 条核心用例', desc:'选择短、稳、覆盖核心路径的测试。', tag:'测试策略', xp:45, deliver:'参考 docs/11-smoke-suite.md。'},
+      {id:'w10-1', week:10, title:'Git 任务：创建一次有意义的提交', desc:'使用清晰的 commit message 保存本周学习成果。', tag:'Git', xp:30, deliver:'例如 docs: add weekly testing notes。'},
+      {id:'w11-1', week:11, title:'作品集任务：整理测试成果', desc:'把用例、Bug、自动化、接口和 SQL 练习串成项目故事。', tag:'作品集', xp:55, deliver:'完善 docs/final-test-summary.md。'},
+      {id:'w12-1', week:12, title:'最终 Boss：讲清一条完整测试链路', desc:'从需求分析到用例、执行、Bug、回归和自动化，录音或写下来。', tag:'综合挑战', xp:100, deliver:'完成一份个人学习总结。'}
+    ];
+    const tips = ['先理解“为什么测”，再学习“怎么自动化”。','测试失败不是坏事，它会告诉你下一步调查什么。','一个清晰的断言，比十个没有目的的操作更有价值。','今天只完成一个小任务，也算在持续升级。','接口测试验证数据，UI 测试验证用户旅程。','不要害怕写错：故意失败是学习测试框架的好方法。'];
+    const badges = [{at:1,icon:'🌱',name:'初次出发'},{at:3,icon:'🕵️',name:'测试侦探'},{at:7,icon:'⚙️',name:'自动化学徒'},{at:12,icon:'🧭',name:'接口探险家'},{at:20,icon:'👑',name:'质量守护者'}];
+    let state = JSON.parse(localStorage.getItem('testquest-progress') || '{}'); state.done = state.done || {}; state.lastDate = state.lastDate || ''; state.streak = state.streak || 0; let filter='all', activeId=null;
+    const $ = id => document.getElementById(id); const save=()=>localStorage.setItem('testquest-progress', JSON.stringify(state));
+    function completed(){return missions.filter(m=>state.done[m.id]).length} function xp(){return missions.reduce((n,m)=>n+(state.done[m.id]?m.xp:0),0)}
+    function renderStats(){const total=xp(), level=Math.floor(total/100)+1, within=total%100; $('levelStat').textContent='Lv.'+level; $('xpStat').textContent=total+' XP'; $('doneStat').textContent=completed()+' / '+missions.length; $('streakStat').textContent=state.streak+' 天'; $('levelProgress').style.width=within+'%'; $('levelProgressText').textContent=within+' / 100 XP'; const names=['测试学徒','用例探索者','自动化冒险家','质量工程师','测试领主']; $('rankName').textContent=names[Math.min(level-1,names.length-1)]; $('rankText').textContent=level>=5?'你已经成为质量守护者！':'再完成 '+(100-within)+' XP 升级'; $('avatar').textContent=['🧪','🔍','⚙️','🚀','👑'][Math.min(level-1,4)]; $('tip').textContent=tips[completed()%tips.length]; $('badges').innerHTML=badges.map(b=>`<span class="badge ${completed()>=b.at?'':'locked'}">${b.icon} ${b.name}</span>`).join(''); }
+    function renderMissions(){const list=missions.filter(m=>filter==='all'||(filter==='done'?state.done[m.id]:!state.done[m.id])); if(!list.length){$('missions').innerHTML='<div class="empty">🎉 这一栏已经全部完成！去挑战其他任务吧。</div>';return} $('missions').innerHTML=list.map(m=>`<article class="mission ${state.done[m.id]?'done':''}" data-id="${m.id}"><button class="check" aria-label="${state.done[m.id]?'取消完成':'完成任务'}">${state.done[m.id]?'✓':''}</button><div class="mission-body"><div class="mission-title">第 ${m.week} 周 · ${m.title}</div><div class="mission-desc">${m.desc}</div><span class="tag">${m.tag}</span></div><span class="xp">+${m.xp} XP</span></article>`).join(''); document.querySelectorAll('.mission').forEach(el=>{el.addEventListener('click',e=>{if(e.target.classList.contains('check')) toggle(el.dataset.id); else openModal(el.dataset.id)});}); }
+    function toggle(id){state.done[id]=!state.done[id]; if(state.done[id]){const today=new Date().toISOString().slice(0,10); if(state.lastDate!==today){const yesterday=new Date(Date.now()-86400000).toISOString().slice(0,10); state.streak=state.lastDate===yesterday?state.streak+1:1; state.lastDate=today;}} save(); render();}
+    function openModal(id){activeId=id; const m=missions.find(x=>x.id===id); $('modalTitle').textContent=m.title; $('modalDesc').textContent=m.desc; $('modalExtra').innerHTML=`<p><strong>任务交付物：</strong>${m.deliver}</p><p><span class="tag">${m.tag}</span> 完成可获得 <strong>${m.xp} XP</strong></p>`; $('completeModal').textContent=state.done[id]?'取消完成':'完成任务 +'+m.xp+' XP'; $('modalBackdrop').classList.add('show');}
+    function render(){renderStats();renderMissions();}
+    document.querySelectorAll('.tab').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));btn.classList.add('active');filter=btn.dataset.filter;renderMissions()})); $('startToday').onclick=()=>{$('missionsCard').scrollIntoView({behavior:'smooth'});}; $('closeModal').onclick=()=>$('modalBackdrop').classList.remove('show'); $('modalBackdrop').onclick=e=>{if(e.target.id==='modalBackdrop')$('modalBackdrop').classList.remove('show')}; $('completeModal').onclick=()=>{toggle(activeId);$('modalBackdrop').classList.remove('show')}; $('resetProgress').onclick=()=>{if(confirm('确定要清除当前浏览器中的学习进度吗？')){state={done:{},lastDate:'',streak:0};save();render();}}; render();
+  </script>
+</body>
+</html>
